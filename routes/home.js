@@ -9,7 +9,7 @@ router.get('/products',[], async(req, res) => {
       res.json(home[0].products);
     })
     .catch((error) => {
-      console.error('Error retrieving carts:', error);
+      console.error('Error retrieving products', error);
       res.status(500).json({ error: 'Server error' });
     });
       
@@ -26,5 +26,18 @@ router.get('/categories',[], async(req, res) => {
     });
       
     })
+
+    //router 3
+    router.get('/app',[], async(req, res) => {
+      const c=await categoriesAndProduct.find()
+      .then((home) => {
+        res.json(home[0].products);
+      })
+      .catch((error) => {
+        console.error('Error retrieving carts:', error);
+        res.status(500).json({ error: 'Server error' });
+      });
+        
+      })
 
 module.exports = router;
