@@ -1,30 +1,21 @@
 const connectToMongo = require('./db');
+const functions = require('firebase-functions');
+const express = require('express');
+const app = express();
+const port = 5000;
+const cors = require('cors');
 
 connectToMongo();
-const functions=require('firebase-functions')
-const express = require('express')
-const app = express()
-const port = 5000;
-const authRouter = require('./routes/auth');
-const cors=require('cors')
 
-app.use(cors({
-  origin: '*'
-}));
+app.use(cors({ origin: '*' }));
+app.use(express.json());
 
-// app.get('/', (req, res) => {
-//   res.send('Hello World!')
-// })
-
-app.use(express.json())
-
-app.use('/auth',authRouter)
-app.use('/cart',require('./routes/cart'))
-app.use('/home',require('./routes/home'))
-
+app.use('/auth', require('./routes/auth'));
+app.use('/cart', require('./routes/cart'));
+app.use('/home', require('./routes/home'));
 
 app.listen(port, () => {
-  console.log(`Example app listening on port ${port}`)
-})
+  console.log(`Ecommerce Backend listening on port ${port}`);
+});
 
-exports.api=functions.https.onRequest(app)
+exports.api = functions.https.onRequest(app);

@@ -15,6 +15,9 @@ const productSchema = new Schema({
         },
         quantity:{
             type:Number,
+        },
+        pId:{
+            type:String,
         }
     }]
     

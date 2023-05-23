@@ -1,43 +1,39 @@
 const express = require('express');
-const router =express.Router();
-const categoriesAndProduct =require('../models/categoriesAndProduct')
+const router = express.Router();
+const categoriesAndProduct = require('../models/categoriesAndProduct');
 
-//route 1 to get all products 
-router.get('/products',[], async(req, res) => {
-    const c=await categoriesAndProduct.find()
-    .then((home) => {
-      res.json(home[0].products);
-    })
-    .catch((error) => {
-      console.error('Error retrieving products', error);
-      res.status(500).json({ error: 'Server error' });
-    });
-      
-    })
-//route 2 to get all categories 
-router.get('/categories',[], async(req, res) => {
-    categoriesAndProduct.find()
-    .then((home) => {
-      res.json(home[0].categories);
-    })
-    .catch((error) => {
-      console.error('Error retrieving carts:', error);
-      res.status(500).json({ error: 'Server error' });
-    });
-      
-    })
-
-    //router 3
-    router.get('/app',[], async(req, res) => {
-      const c=await categoriesAndProduct.find()
-      .then((home) => {
+// Route 1: Get all products
+router.get('/products', [], async (req, res) => {
+    try {
+        const home = await categoriesAndProduct.find();
         res.json(home[0].products);
-      })
-      .catch((error) => {
-        console.error('Error retrieving carts:', error);
+    } catch (error) {
+        console.error('Error retrieving products', error);
         res.status(500).json({ error: 'Server error' });
-      });
-        
-      })
+    }
+});
+
+// Route 2: Get all categories
+router.get('/categories', [], async (req, res) => {
+    try {
+        const home = await categoriesAndProduct.find();
+        res.json(home[0].categories);
+    } catch (error) {
+        console.error('Error retrieving categories', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
+
+// Route 3: Get products by category
+router.get('/products/:id', [], async (req, res) => {
+    try {
+        const home = await categoriesAndProduct.find();
+        const productByCategory = home[0].products.filter((p) => p.categoryId.toString() === req.params.id);
+        res.json(productByCategory);
+    } catch (error) {
+        console.error('Error retrieving products by category', error);
+        res.status(500).json({ error: 'Server error' });
+    }
+});
 
 module.exports = router;
